@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Analisis{% endblock %}
+{% block header_title %}Dashboard Analisis Data Siswa{% endblock %}
+
+{% block content %}
+<div class="alert alert-info py-2 small mb-3">
+    <i class="bi bi-info-circle me-1"></i>
+    Anda login sebagai <strong>Guru/Wali Kelas</strong>. Dashboard ini bersifat <strong>hanya-lihat (read-only)</strong>
+    untuk membantu memantau perkembangan akademik, kehadiran, dan prestasi siswa.
+</div>
+{% include "analitik/_dashboard_content.html" %}
+{% endblock %}
+
+{% block extra_js %}
+{% include "analitik/_dashboard_charts_js.html" %}
+{% endblock %}

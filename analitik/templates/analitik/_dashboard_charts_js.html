@@ -1,0 +1,45 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+const analisis = JSON.parse(document.getElementById('analisis-data').textContent);
+const palet = ['#0d9488','#0f3d5c','#f59e0b','#6366f1','#16a34a','#e11d48','#0891b2','#7c3aed'];
+
+function buatBar(id, labels, values, warna){
+    const el = document.getElementById(id);
+    if(!el) return;
+    new Chart(el, {
+        type: 'bar',
+        data: { labels: labels, datasets: [{ data: values, backgroundColor: warna || '#0d9488', borderRadius:6 }] },
+        options: { plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true } } }
+    });
+}
+function buatDoughnut(id, labels, values){
+    const el = document.getElementById(id);
+    if(!el) return;
+    new Chart(el, {
+        type: 'doughnut',
+        data: { labels: labels, datasets: [{ data: values, backgroundColor: palet }] },
+        options: { plugins:{ legend:{ position:'bottom' } } }
+    });
+}
+function buatLine(id, labels, values){
+    const el = document.getElementById(id);
+    if(!el) return;
+    new Chart(el, {
+        type: 'line',
+        data: { labels: labels, datasets: [{ data: values, borderColor:'#0f766e', backgroundColor:'rgba(13,148,136,.15)', fill:true, tension:.35 }] },
+        options: { plugins:{legend:{display:false}} }
+    });
+}
+
+buatBar('chartSiswaPerKelas', analisis.siswa_per_kelas.labels, analisis.siswa_per_kelas.values, '#0f3d5c');
+buatDoughnut('chartGender', ['Laki-laki','Perempuan'], [analisis.ringkasan.siswa_laki, analisis.ringkasan.siswa_perempuan]);
+
+buatBar('chartNilaiKelas', analisis.nilai.per_kelas_labels, analisis.nilai.per_kelas_values, '#0d9488');
+buatBar('chartNilaiMapel', analisis.nilai.per_mapel_labels, analisis.nilai.per_mapel_values, '#6366f1');
+buatLine('chartTrenNilai', analisis.nilai.per_semester_labels, analisis.nilai.per_semester_values);
+
+buatDoughnut('chartKehadiranDistribusi', analisis.kehadiran.distribusi_labels, analisis.kehadiran.distribusi_values);
+buatBar('chartKehadiranKelas', analisis.kehadiran.per_kelas_labels, analisis.kehadiran.per_kelas_values, '#16a34a');
+
+buatDoughnut('chartPrestasiTingkat', analisis.prestasi.per_tingkat_labels, analisis.prestasi.per_tingkat_values);
+</script>

@@ -1,0 +1,195 @@
+
+{{ analisis|json_script:"analisis-data" }}
+
+<!-- ==================== STAT CARDS ==================== -->
+<div class="row g-3">
+    <div class="col-6 col-lg-2">
+        <div class="stat-card">
+            <div class="icon-badge" style="background:#0f766e;"><i class="bi bi-people-fill"></i></div>
+            <div class="value">{{ analisis.ringkasan.total_siswa }}</div>
+            <div class="label">Total Siswa</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2">
+        <div class="stat-card">
+            <div class="icon-badge" style="background:#0f3d5c;"><i class="bi bi-person-badge-fill"></i></div>
+            <div class="value">{{ analisis.ringkasan.total_guru }}</div>
+            <div class="label">Total Guru</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2">
+        <div class="stat-card">
+            <div class="icon-badge" style="background:#f59e0b;"><i class="bi bi-door-open-fill"></i></div>
+            <div class="value">{{ analisis.ringkasan.total_kelas }}</div>
+            <div class="label">Total Kelas</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2">
+        <div class="stat-card">
+            <div class="icon-badge" style="background:#6366f1;"><i class="bi bi-journal-bookmark-fill"></i></div>
+            <div class="value">{{ analisis.ringkasan.total_mapel }}</div>
+            <div class="label">Mata Pelajaran</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2">
+        <div class="stat-card">
+            <div class="icon-badge" style="background:#0d9488;"><i class="bi bi-clipboard-data-fill"></i></div>
+            <div class="value">{{ analisis.nilai.rata_rata_keseluruhan }}</div>
+            <div class="label">Rata-rata Nilai</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2">
+        <div class="stat-card">
+            <div class="icon-badge" style="background:#16a34a;"><i class="bi bi-calendar-check-fill"></i></div>
+            <div class="value">{{ analisis.kehadiran.persentase_hadir_keseluruhan }}%</div>
+            <div class="label">Tingkat Kehadiran</div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== CHARTS ROW 1 ==================== -->
+<div class="section-title"><i class="bi bi-people"></i> Sebaran Siswa</div>
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h6><i class="bi bi-bar-chart-line me-1"></i>Jumlah Siswa per Kelas</h6>
+            <canvas id="chartSiswaPerKelas" height="220"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h6><i class="bi bi-pie-chart me-1"></i>Komposisi Jenis Kelamin</h6>
+            <canvas id="chartGender" height="220"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="section-title"><i class="bi bi-clipboard-data"></i> Analisis Nilai Akademik</div>
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h6><i class="bi bi-bar-chart me-1"></i>Rata-rata Nilai per Kelas</h6>
+            <canvas id="chartNilaiKelas" height="220"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <h6><i class="bi bi-bar-chart me-1"></i>Rata-rata Nilai per Mata Pelajaran</h6>
+            <canvas id="chartNilaiMapel" height="220"></canvas>
+        </div>
+    </div>
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-12">
+        <div class="chart-card">
+            <h6><i class="bi bi-graph-up me-1"></i>Tren Rata-rata Nilai per Periode/Semester</h6>
+            <canvas id="chartTrenNilai" height="110"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-lg-6">
+        <div class="table-card">
+            <div class="p-3 border-bottom fw-bold"><i class="bi bi-trophy text-warning me-1"></i>Top 10 Siswa - Rata-rata Nilai Tertinggi</div>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead><tr><th>#</th><th>Nama Siswa</th><th>Kelas</th><th>Rata-rata</th></tr></thead>
+                    <tbody>
+                        {% for s in analisis.nilai.top_siswa %}
+                        <tr><td>{{ forloop.counter }}</td><td>{{ s.siswa_nama }}</td><td>{{ s.kelas }}</td><td><strong>{{ s.rata_rata }}</strong></td></tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="text-center text-muted py-3">Belum ada data nilai.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="table-card">
+            <div class="p-3 border-bottom fw-bold"><i class="bi bi-exclamation-triangle text-danger me-1"></i>Siswa Perlu Perhatian (Nilai di Bawah KKM)</div>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead><tr><th>#</th><th>Nama Siswa</th><th>Jumlah di Bawah KKM</th><th>Rata-rata</th></tr></thead>
+                    <tbody>
+                        {% for s in analisis.nilai.perlu_perhatian %}
+                        <tr><td>{{ forloop.counter }}</td><td>{{ s.siswa_nama }}</td><td><span class="badge bg-danger">{{ s.jumlah_dibawah_kkm }}</span></td><td>{{ s.rata_rata }}</td></tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="text-center text-muted py-3">Tidak ada siswa di bawah KKM. 🎉</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-title"><i class="bi bi-calendar-check"></i> Analisis Kehadiran</div>
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="chart-card">
+            <h6><i class="bi bi-pie-chart-fill me-1"></i>Distribusi Status Kehadiran</h6>
+            <canvas id="chartKehadiranDistribusi" height="240"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="chart-card">
+            <h6><i class="bi bi-bar-chart me-1"></i>Persentase Kehadiran per Kelas</h6>
+            <canvas id="chartKehadiranKelas" height="240"></canvas>
+        </div>
+    </div>
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-12">
+        <div class="table-card">
+            <div class="p-3 border-bottom fw-bold"><i class="bi bi-person-x text-danger me-1"></i>Siswa dengan Persentase Kehadiran Terendah</div>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead><tr><th>#</th><th>Nama Siswa</th><th>Persentase Hadir</th></tr></thead>
+                    <tbody>
+                        {% for s in analisis.kehadiran.kehadiran_rendah %}
+                        <tr><td>{{ forloop.counter }}</td><td>{{ s.siswa_nama }}</td>
+                            <td>
+                                <div class="progress" style="height:18px;max-width:220px;">
+                                    <div class="progress-bar bg-danger" style="width:{{ s.persentase_hadir }}%">{{ s.persentase_hadir }}%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center text-muted py-3">Belum ada data kehadiran.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-title"><i class="bi bi-trophy"></i> Analisis Prestasi Siswa</div>
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="chart-card">
+            <h6><i class="bi bi-award me-1"></i>Prestasi Berdasarkan Tingkat</h6>
+            <canvas id="chartPrestasiTingkat" height="240"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="table-card">
+            <div class="p-3 border-bottom fw-bold"><i class="bi bi-stars text-warning me-1"></i>Siswa Terbanyak Meraih Prestasi</div>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead><tr><th>#</th><th>Nama Siswa</th><th>Jumlah Prestasi</th></tr></thead>
+                    <tbody>
+                        {% for s in analisis.prestasi.top_siswa_prestasi %}
+                        <tr><td>{{ forloop.counter }}</td><td>{{ s.siswa_nama }}</td><td><span class="badge bg-teal">{{ s.jumlah_prestasi }}</span></td></tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center text-muted py-3">Belum ada data prestasi.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
