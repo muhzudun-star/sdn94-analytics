@@ -44,15 +44,15 @@
 
             {% if IS_ADMIN_ROLE %}
             <div class="nav-section-title">Data Master</div>
-            <a class="nav-link {% if 'siswa' in request.path %}active{% endif %}" href="{% url 'akademik:siswa_list' %}"><i class="bi bi-people"></i> Data Siswa</a>
+            <a class="nav-link {% if 'siswa' in request.path %}active{% endif %}" href="{% url 'siswa:siswa_list' %}"><i class="bi bi-people"></i> Data Siswa</a>
             <a class="nav-link {% if 'kelas' in request.path %}active{% endif %}" href="{% url 'akademik:kelas_list' %}"><i class="bi bi-door-open"></i> Data Kelas</a>
-            <a class="nav-link {% if 'guru' in request.path %}active{% endif %}" href="{% url 'akademik:guru_list' %}"><i class="bi bi-person-badge"></i> Data Guru</a>
+            <a class="nav-link {% if 'guru' in request.path %}active{% endif %}" href="{% url 'kepegawaian:guru_list' %}"><i class="bi bi-person-badge"></i> Data Guru</a>
             <a class="nav-link {% if 'mapel' in request.path %}active{% endif %}" href="{% url 'akademik:mapel_list' %}"><i class="bi bi-journal-bookmark"></i> Mata Pelajaran</a>
 
             <div class="nav-section-title">Transaksi</div>
-            <a class="nav-link {% if 'nilai' in request.path %}active{% endif %}" href="{% url 'akademik:nilai_list' %}"><i class="bi bi-clipboard-data"></i> Nilai</a>
-            <a class="nav-link {% if 'kehadiran' in request.path %}active{% endif %}" href="{% url 'akademik:kehadiran_list' %}"><i class="bi bi-calendar-check"></i> Kehadiran</a>
-            <a class="nav-link {% if 'prestasi' in request.path %}active{% endif %}" href="{% url 'akademik:prestasi_list' %}"><i class="bi bi-trophy"></i> Prestasi</a>
+            <a class="nav-link {% if 'nilai' in request.path %}active{% endif %}" href="{% url 'penilaian:nilai_list' %}"><i class="bi bi-clipboard-data"></i> Nilai</a>
+            <a class="nav-link {% if 'kehadiran' in request.path %}active{% endif %}" href="{% url 'penilaian:kehadiran_list' %}"><i class="bi bi-calendar-check"></i> Kehadiran</a>
+            <a class="nav-link {% if 'prestasi' in request.path %}active{% endif %}" href="{% url 'penilaian:prestasi_list' %}"><i class="bi bi-trophy"></i> Prestasi</a>
 
             <div class="nav-section-title">Sistem</div>
             <a class="nav-link" href="/django-admin/" target="_blank"><i class="bi bi-gear"></i> Django Admin</a>

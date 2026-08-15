@@ -31,7 +31,10 @@ INSTALLED_APPS = [
 
     # local apps
     'accounts',
+    'kepegawaian',
     'akademik',
+    'siswa',
+    'penilaian',
     'analitik',
 ]
 
@@ -108,7 +111,7 @@ LOGOUT_REDIRECT_URL = 'accounts:login'
 # ---------------------------------------------------------------------------
 # API internal dipakai oleh modul analitik (pandas) untuk mengambil data.
 # Semua analisis TIDAK query database secara langsung, melainkan melalui API
-# REST yang sudah disediakan oleh app "akademik".
+# REST yang sudah disediakan oleh app "kepegawaian", "akademik", "siswa", dan "penilaian".
 API_BASE_URL = os.environ.get('API_BASE_URL', 'http://127.0.0.1:8000')
 INTERNAL_API_KEY = os.environ.get('INTERNAL_API_KEY', 'sdn94-internal-key-2026')
 
@@ -118,7 +121,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'akademik.permissions.IsInternalOrAuthenticated',
+        'common.permissions.IsInternalOrAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': None,  # non-paginated -> gampang diolah pandas
 }

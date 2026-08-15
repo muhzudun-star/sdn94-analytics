@@ -13,7 +13,10 @@ from django.contrib.auth.models import User
 from django.db import transaction
 
 from accounts.models import Profile
-from akademik.models import Guru, Kelas, Siswa, MataPelajaran, Nilai, Kehadiran, Prestasi
+from kepegawaian.models import Guru
+from akademik.models import Kelas, MataPelajaran
+from siswa.models import Siswa
+from penilaian.models import Nilai, Kehadiran, Prestasi
 
 random.seed(94)
 
